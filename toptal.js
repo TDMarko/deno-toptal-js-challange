@@ -524,7 +524,7 @@ setInterval(() => {
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
-            "cookie": "PHPSESSID=40379b1e59570d8a0ba9e17ee4376769; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
+            "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
         },
         "referrer": "https://speedcoding.toptal.com/challenge?ch=toptal-js-2021",
         "referrerPolicy": "strict-origin-when-cross-origin",
