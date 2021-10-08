@@ -488,6 +488,36 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 }
             })
             break;
+        case "getType":
+            testsDone = Object.entries(tests).map(test => {
+                if (test[0].match(/rnd/g)) {
+                    const x = test[1].args[0]
+
+                    return [test[0], typeof x]
+                } else {
+                    return [test[0], test[1].result]
+                }
+            })
+            break;
+        case "missingInteger":
+            testsDone = Object.entries(tests).map(test => {
+                if (test[0].match(/rnd/g)) {
+                    const x = test[1].args[0]
+
+                    let missing = null
+
+                    for (let j = 0; j < x.length - 1; j++) {
+                        if (!x.includes(j)) {
+                            missing = j
+                        }
+                    }
+
+                    return [test[0], missing === null ? x.length + 1 : missing]
+                } else {
+                    return [test[0], test[1].result]
+                }
+            })
+            break;
     }
 
     // FETCH DATA
@@ -502,6 +532,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 if (taskData.isChallengeEntryFinished) {
                     console.log("Task finished, points: ", taskData.totalPoints)
                 } else {
+                    console.log(taskData.nextTask.code)
                     solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
                 }
             } else {
@@ -519,15 +550,8 @@ setInterval(() => {
             "cache-control": "no-cache",
             "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryMJtcVlLY8GI3Ofkp",
             "pragma": "no-cache",
-            "sec-ch-ua": "\"Chromium\";v=\"92\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"92\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-origin",
             "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
         },
-        "referrer": "https://speedcoding.toptal.com/challenge?ch=toptal-js-2021",
-        "referrerPolicy": "strict-origin-when-cross-origin",
         "body": "------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"challengeSlug\"\r\n\r\ntoptal-js-2021\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\ntdmarko@gmail.com\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"leaderboardName\"\r\n\r\nMark Timfeyev\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isConfirmedToBeContacted\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isTermsAndConditionsChecked\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"countryAlpha2\"\r\n\r\nLV\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp--\r\n",
         "method": "POST",
         "mode": "cors"
@@ -541,4 +565,6 @@ setInterval(() => {
 
             solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
         })
-}, 20000)
+}, 30000)
+
+console.log("Script init, interval set for 30 secs...")
