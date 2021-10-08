@@ -546,7 +546,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
 // INITIAL REQUEST
 let attemptsDone = 0
 const interval = setInterval(() => {
-    if (attemptsDone >= 10) {
+    if (attemptsDone >= 22) {
         console.log("Done 10 attempts, pausing...")
         window.clearInterval(interval)
     } else {
@@ -574,6 +574,6 @@ const interval = setInterval(() => {
                 attemptsDone++
             })
     }
-}, 30000)
+}, 20000)
 
 console.log("Script init, interval set for 30 secs...")
