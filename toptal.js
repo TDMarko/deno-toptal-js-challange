@@ -548,6 +548,7 @@ let attemptsDone = 0
 const interval = setInterval(() => {
     if (attemptsDone >= 10) {
         console.log("Done 10 attempts, pausing...")
+        window.clearInterval(interval)
     } else {
         fetch("https://speedcoding.toptal.com/webappApi/entry?ch=29&acc=4901", {
             "headers": {
