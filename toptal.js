@@ -535,6 +535,8 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     console.log("Task finished, points: ", taskData.totalPoints)
                 } else {
                     solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
+
+                    console.log(`Execution time: ${endTime - startTime} milliseconds`)
                 }
             } else {
                 console.log(taskData)
@@ -546,7 +548,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
 // INITIAL REQUEST
 let attemptsDone = 0
 const interval = setInterval(() => {
-    if (attemptsDone >= 22) {
+    if (attemptsDone >= 200) {
         console.log("Done 10 attempts, pausing...")
         window.clearInterval(interval)
     } else {
