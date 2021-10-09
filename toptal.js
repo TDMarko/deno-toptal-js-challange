@@ -9,6 +9,7 @@ const requestHeaders = (attemptId, entryKey, tests) => ({
 
 let entryId = ""
 let entryKey = ""
+let allPoints = []
 
 const solveAndGetNextTask = (task, tests, attemptId) => {
     let testsDone = ""
@@ -608,6 +609,8 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
             if (taskData.isSuccess) {
                 if (taskData.isChallengeEntryFinished) {
                     console.log("Task finished, points: ", taskData.totalPoints)
+                    allPoints.push(taskData.totalPoints)
+                    console.log("All points this run:", allPoints)
                 } else {
                     solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
                 }
