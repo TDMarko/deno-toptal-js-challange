@@ -564,7 +564,30 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                         result = "draw"
                     }
 
-                    return [test[0], result]
+                    const checkError = () => {
+                        let error = false
+                        error = x[0][0] === "x" && x[0][2] === "o" && x[1][0] === "x" && x[1][2] === "o" && x[2][0] === "x" && x[2][2] === "o"
+
+                        if (!error) {
+                            error = x[0][0] === "o" && x[0][2] === "x" && x[1][0] === "o" && x[1][2] === "x" && x[2][0] === "o" && x[2][2] === "x"
+                        }
+                        if (!error) {
+                            error = x[0][0] === "x" && x[0][1] === "o" && x[1][0] === "x" && x[1][1] === "o" && x[2][0] === "x" && x[2][1] === "o"
+                        }
+                        if (!error) {
+                            error = x[0][0] === "o" && x[0][1] === "x" && x[1][0] === "o" && x[1][1] === "x" && x[2][0] === "o" && x[2][1] === "x"
+                        }
+                        if (!error) {
+                            error = x[0][1] === "o" && x[0][2] === "x" && x[1][1] === "o" && x[1][2] === "x" && x[2][1] === "o" && x[2][2] === "x"
+                        }
+                        if (!error) {
+                            error = x[0][1] === "x" && x[0][2] === "o" && x[1][1] === "x" && x[1][2] === "o" && x[2][1] === "x" && x[2][2] === "o"
+                        }
+
+                        return error
+                    }
+
+                    return [test[0], checkError() ? "error" : result]
                 } else {
                     return [test[0], test[1].result]
                 }
@@ -598,34 +621,34 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
 // INITIAL REQUEST
 let attemptsDone = 0
 const interval = setInterval(() => {
-if (attemptsDone >= 200) {
-    console.log("Done 10 attempts, pausing...")
-    window.clearInterval(interval)
-} else {
-    fetch("https://speedcoding.toptal.com/webappApi/entry?ch=29&acc=4901", {
-        "headers": {
-            "accept": "*/*",
-            "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,lv;q=0.6",
-            "cache-control": "no-cache",
-            "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryMJtcVlLY8GI3Ofkp",
-            "pragma": "no-cache",
-            "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
-        },
-        "body": "------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"challengeSlug\"\r\n\r\ntoptal-js-2021\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\ntdmarko@gmail.com\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"leaderboardName\"\r\n\r\nMark Timfeyev\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isConfirmedToBeContacted\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isTermsAndConditionsChecked\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"countryAlpha2\"\r\n\r\nLV\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp--\r\n",
-        "method": "POST",
-        "mode": "cors"
-    })
-        .then(response => response.json())
-        .then(data => {
-            const taskData = data.data
-            console.log(`Attempt: ${attemptsDone}`, data)
-            entryId = taskData.entry.id
-            entryKey = taskData.entry.entry_key
-
-            solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
-            attemptsDone++
+    if (attemptsDone >= 200) {
+        console.log("Done 10 attempts, pausing...")
+        window.clearInterval(interval)
+    } else {
+        fetch("https://speedcoding.toptal.com/webappApi/entry?ch=29&acc=4901", {
+            "headers": {
+                "accept": "*/*",
+                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,lv;q=0.6",
+                "cache-control": "no-cache",
+                "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryMJtcVlLY8GI3Ofkp",
+                "pragma": "no-cache",
+                "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
+            },
+            "body": "------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"challengeSlug\"\r\n\r\ntoptal-js-2021\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\ntdmarko@gmail.com\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"leaderboardName\"\r\n\r\nMark Timfeyev\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isConfirmedToBeContacted\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isTermsAndConditionsChecked\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"countryAlpha2\"\r\n\r\nLV\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp--\r\n",
+            "method": "POST",
+            "mode": "cors"
         })
-}
+            .then(response => response.json())
+            .then(data => {
+                const taskData = data.data
+                console.log(`Attempt: ${attemptsDone}`, data)
+                entryId = taskData.entry.id
+                entryKey = taskData.entry.entry_key
+
+                solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
+                attemptsDone++
+            })
+    }
 }, 20000)
 
 console.log("Script init, interval set for 30 secs...")
