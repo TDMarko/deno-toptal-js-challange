@@ -348,17 +348,18 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
             testsDone = Object.entries(tests).map(test => {
                 if (test[0].match(/rnd/g)) {
                     const x = test[1].args[0]
-                    const y = test[1].args[1]
 
-                    function ValidateIPaddress(ipaddress) {
-                        if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
-                            return true
+                    function isIP(ip) {
+                        if (typeof (ip) !== 'string')
+                            return false;
+                        if (!ip.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/)) {
+                            return false;
                         }
-                        return false
+                        return ip.split('.').filter(octect => octect >= 0 && octect <= 255).length === 4;
                     }
 
 
-                    return [test[0], ValidateIPaddress(x)]
+                    return [test[0], isIP(x)]
                 } else {
                     return [test[0], test[1].result]
                 }
@@ -518,6 +519,57 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 }
             })
             break;
+        case "sortArrayDesc":
+            testsDone = Object.entries(tests).map(test => {
+                if (test[0].match(/rnd/g)) {
+                    const x = test[1].args[0].sort((a, b) => b.localeCompare(a))
+
+                    return [test[0], x]
+                } else {
+                    return [test[0], test[1].result]
+                }
+            })
+            break;
+        case "ticTacToeWinner":
+            testsDone = Object.entries(tests).map(test => {
+                if (test[0].match(/rnd/g)) {
+                    const x = test[1].args[0]
+                    const players = ["x", "o"]
+                    const winMoves = [448, 56, 7, 292, 146, 73, 273, 84]
+                    let result = "error"
+
+                    const getMoves = (board, player) => {
+                        var moves = 0;
+                        for (var i = 0; i < 9; i++) {
+                            moves += board[(i / 3) | 0][i % 3] === player ? 1 << i : 0;
+                        }
+                        return moves;
+                    };
+
+                    const checkWin = (board, player) => {
+                        const moves = getMoves(board, player);
+                        return winMoves.some((win) => (win & moves) === win);
+                    };
+
+                    const winer = (board) => {
+                        return !players.some((player) => {
+                            if (checkWin(board, player)) {
+                                result = player
+                                return true;
+                            }
+                        });
+                    };
+
+                    if (winer(x)) {
+                        result = "draw"
+                    }
+
+                    return [test[0], result]
+                } else {
+                    return [test[0], test[1].result]
+                }
+            })
+            break;
     }
 
     // SOLVE TASK
@@ -546,34 +598,34 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
 // INITIAL REQUEST
 let attemptsDone = 0
 const interval = setInterval(() => {
-    if (attemptsDone >= 200) {
-        console.log("Done 10 attempts, pausing...")
-        window.clearInterval(interval)
-    } else {
-        fetch("https://speedcoding.toptal.com/webappApi/entry?ch=29&acc=4901", {
-            "headers": {
-                "accept": "*/*",
-                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,lv;q=0.6",
-                "cache-control": "no-cache",
-                "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryMJtcVlLY8GI3Ofkp",
-                "pragma": "no-cache",
-                "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
-            },
-            "body": "------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"challengeSlug\"\r\n\r\ntoptal-js-2021\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\ntdmarko@gmail.com\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"leaderboardName\"\r\n\r\nMark Timfeyev\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isConfirmedToBeContacted\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isTermsAndConditionsChecked\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"countryAlpha2\"\r\n\r\nLV\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp--\r\n",
-            "method": "POST",
-            "mode": "cors"
-        })
-            .then(response => response.json())
-            .then(data => {
-                const taskData = data.data
-                console.log(`Attempt: ${attemptsDone}`, data)
-                entryId = taskData.entry.id
-                entryKey = taskData.entry.entry_key
+if (attemptsDone >= 200) {
+    console.log("Done 10 attempts, pausing...")
+    window.clearInterval(interval)
+} else {
+    fetch("https://speedcoding.toptal.com/webappApi/entry?ch=29&acc=4901", {
+        "headers": {
+            "accept": "*/*",
+            "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,lv;q=0.6",
+            "cache-control": "no-cache",
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryMJtcVlLY8GI3Ofkp",
+            "pragma": "no-cache",
+            "cookie": "PHPSESSID=172aba3995e4fc8b91d0d454999cf5d4; visitor_id=965869d3-80c6-4ef4-b2b4-44339b547e7f"
+        },
+        "body": "------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"challengeSlug\"\r\n\r\ntoptal-js-2021\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\ntdmarko@gmail.com\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"leaderboardName\"\r\n\r\nMark Timfeyev\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isConfirmedToBeContacted\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"isTermsAndConditionsChecked\"\r\n\r\n1\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp\r\nContent-Disposition: form-data; name=\"countryAlpha2\"\r\n\r\nLV\r\n------WebKitFormBoundaryMJtcVlLY8GI3Ofkp--\r\n",
+        "method": "POST",
+        "mode": "cors"
+    })
+        .then(response => response.json())
+        .then(data => {
+            const taskData = data.data
+            console.log(`Attempt: ${attemptsDone}`, data)
+            entryId = taskData.entry.id
+            entryKey = taskData.entry.entry_key
 
-                solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
-                attemptsDone++
-            })
-    }
+            solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
+            attemptsDone++
+        })
+}
 }, 20000)
 
 console.log("Script init, interval set for 30 secs...")
