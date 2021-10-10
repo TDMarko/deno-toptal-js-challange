@@ -632,10 +632,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     allPoints.push(taskData.totalPoints)
                     console.log("All points this run:", allPoints)
                 } else {
-                    const startTime = performance.now()
                     solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
-                    const endTime = performance.now()
-                    console.log(`Script time: ${endTime - startTime} milliseconds`)
                 }
             } else {
                 console.log(taskData)
