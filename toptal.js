@@ -616,7 +616,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
             break;
     }
 
-    // SOLVE TASK
+    // SOLVER
     const url = "https://speedcoding.toptal.com/webappApi/entry/" + entryId + "/attemptTask"
     fetch(url, requestHeaders(attemptId, entryKey, testsDone))
         .then(response => response.json())
