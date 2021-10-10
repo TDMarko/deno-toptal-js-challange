@@ -531,6 +531,26 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 }
             })
             break;
+        case "isAnagram":
+            testsDone = Object.entries(tests).map(test => {
+                if (test[0].match(/rnd/g)) {
+                    const x = test[1].args[0]
+                    const y = test[1].args[1]
+
+                    function anagrams(stringA, stringB) {
+                        return cleanString(stringA) === cleanString(stringB);
+                    }
+
+                    function cleanString(str) {
+                        return str.replace(/[^\w]/g).toLowerCase().split('').sort().join()
+                    }
+
+                    return [test[0], anagrams(x, y)]
+                } else {
+                    return [test[0], test[1].result]
+                }
+            })
+            break;
         case "ticTacToeWinner":
             testsDone = Object.entries(tests).map(test => {
                 if (test[0].match(/rnd/g)) {
