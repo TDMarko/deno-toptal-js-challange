@@ -604,7 +604,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                         if (!error) {
                             error = x[0][1] === "x" && x[0][2] === "o" && x[1][1] === "x" && x[1][2] === "o" && x[2][1] === "x" && x[2][2] === "o"
                         }
-
+ c
                         return error
                     }
 
@@ -632,7 +632,10 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     allPoints.push(taskData.totalPoints)
                     console.log("All points this run:", allPoints)
                 } else {
+                    const startTime = performance.now()
                     solveAndGetNextTask(taskData.nextTask.title, taskData.nextTask.tests_json, taskData.attemptId)
+                    const endTime = performance.now()
+                    console.log(`Script time: ${endTime - startTime} milliseconds`)
                 }
             } else {
                 console.log(taskData)
