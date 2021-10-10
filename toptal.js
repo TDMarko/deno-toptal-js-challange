@@ -604,7 +604,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                         if (!error) {
                             error = x[0][1] === "x" && x[0][2] === "o" && x[1][1] === "x" && x[1][2] === "o" && x[2][1] === "x" && x[2][2] === "o"
                         }
- c
+
                         return error
                     }
 
