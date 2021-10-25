@@ -184,7 +184,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 if (test[0].match(/rnd/g)) {
                     const res = test[1].args[0]
 
-                    return [test[0], res.split("").map(c => c === c.toLowerCase() ? c.toUpperCase() : c.toLowerCase()).join("")]
+                    return [test[0], res.split``.map(c => c === c.toLowerCase() ? c.toUpperCase() : c.toLowerCase()).join``]
                 } else {
                     return [test[0], test[1].result]
                 }
@@ -326,16 +326,16 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     const x = test[1].args[0]
                     const y = test[1].args[1]
 
-                    const xArray = x.split("");
+                    const xArray = x.split``;
                     const lastWord = xArray.splice(0, 1);
-                    const firstWord = [...xArray, lastWord].join("");
+                    const firstWord = [...xArray, lastWord].join``;
 
                     function checkWord(word) {
                         if (word === y) return true;
                         if (word === x) return false;
                         const xArray = word.split("");
                         const lastWord = xArray.splice(0, 1);
-                        return checkWord([...xArray, lastWord].join(""));
+                        return checkWord([...xArray, lastWord].join``);
                     }
 
 
@@ -444,7 +444,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     function romanToInt(string) {
                         let result = 0,
                             current, previous = 0;
-                        for (const char of string.split("").reverse()) {
+                        for (const char of string.split``.reverse()) {
                             current = values.get(char);
                             if (current >= previous) {
                                 result += current;
@@ -467,7 +467,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                 if (test[0].match(/rnd/g)) {
                     const x = test[1].args[0]
 
-                    return [test[0], x === x.split("").reverse().join``]
+                    return [test[0], x === x.split``.reverse().join``]
                 } else {
                     return [test[0], test[1].result]
                 }
@@ -542,7 +542,7 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
                     }
 
                     function cleanString(str) {
-                        return str.replace(/[^\w]/g).toLowerCase().split('').sort().join()
+                        return str.replace(/[^\w]/g).toLowerCase().split``.sort().join()
                     }
 
                     return [test[0], anagrams(x, y)]
@@ -583,29 +583,6 @@ const solveAndGetNextTask = (task, tests, attemptId) => {
 
                     if (winer(x)) {
                         result = "draw"
-                    }
-
-                    const checkError = () => {
-                        let error = false
-                        error = x[0][0] === "x" && x[0][2] === "o" && x[1][0] === "x" && x[1][2] === "o" && x[2][0] === "x" && x[2][2] === "o"
-
-                        if (!error) {
-                            error = x[0][0] === "o" && x[0][2] === "x" && x[1][0] === "o" && x[1][2] === "x" && x[2][0] === "o" && x[2][2] === "x"
-                        }
-                        if (!error) {
-                            error = x[0][0] === "x" && x[0][1] === "o" && x[1][0] === "x" && x[1][1] === "o" && x[2][0] === "x" && x[2][1] === "o"
-                        }
-                        if (!error) {
-                            error = x[0][0] === "o" && x[0][1] === "x" && x[1][0] === "o" && x[1][1] === "x" && x[2][0] === "o" && x[2][1] === "x"
-                        }
-                        if (!error) {
-                            error = x[0][1] === "o" && x[0][2] === "x" && x[1][1] === "o" && x[1][2] === "x" && x[2][1] === "o" && x[2][2] === "x"
-                        }
-                        if (!error) {
-                            error = x[0][1] === "x" && x[0][2] === "o" && x[1][1] === "x" && x[1][2] === "o" && x[2][1] === "x" && x[2][2] === "o"
-                        }
-
-                        return error
                     }
 
                     return [test[0], checkError() ? "error" : result]
@@ -672,6 +649,6 @@ const interval = setInterval(() => {
                 attemptsDone++
             })
     }
-}, 20000)
+}, 30000)
 
 console.log("Script init, interval set for 30 secs...")
